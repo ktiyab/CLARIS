@@ -6,14 +6,15 @@ SELECT
   l.state,
   
   -- Combine all AI-generated insights
-  n.risk_assessment_text AS risk_narrative,
-  c.risk_score,
-  c.risk_tier,
-  c.confidence_level,
-  c.primary_hazard,
-  c.premium_factor,
-  IFNULL(a.is_abnormal_activity, FALSE) AS has_abnormal_activity,
-  IFNULL(a.should_alert_customers, FALSE) AS customer_alert_needed,
+    n.risk_assessment_text AS risk_narrative,
+    c.risk_score,
+    c.risk_tier,
+    c.confidence_level,
+    c.primary_hazard,
+    c.premium_factor,
+    IFNULL(a.is_abnormal_activity, FALSE) AS has_abnormal_activity,
+    IFNULL(a.should_alert_customers, FALSE) AS customer_alert_needed,
+    --IFNULL(m.monitoring_alert_text, 'No current threats') AS monitoring_status
   
   -- Include source metrics for validation
   l.total_historical_damage,
@@ -24,14 +25,10 @@ SELECT
   
 FROM `{DATASET_ID}.enriched_location_master` l
 LEFT JOIN `{DATASET_ID}.risk_narratives_generated` n
-  ON l.county_fips = n.county_fips 
-  AND l.county_name = n.county_name 
-  AND l.state = n.state
+  ON l.county_fips = n.county_fips AND l.county_name = n.county_name AND l.state = n.state
 LEFT JOIN `{DATASET_ID}.ai_risk_classifications` c
-  ON l.county_fips = c.county_fips 
-  AND l.county_name = c.county_name 
-  AND l.state = c.state
+  ON l.county_fips = c.county_fips  AND l.county_name = c.county_name AND l.state = c.state
 LEFT JOIN `{DATASET_ID}.alert_triggers` a
-  ON l.county_fips = a.county_fips 
-  AND l.county_name = a.county_name 
-  AND l.state = a.state;
+  ON l.county_fips = a.county_fips AND l.county_name = a.county_name AND l.state = a.state
+LEFT JOIN `{DATASET_ID}.monitoring_alerts_generated` m
+  ON l.county_fips = m.county_fips AND l.county_name = m.county_name AND l.state = m.state;
