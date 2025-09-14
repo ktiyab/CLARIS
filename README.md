@@ -30,7 +30,7 @@ The GoogleCloud BigQuery GenAI toolkit demonstrated:
 - AI.GENERATE_TABLE: Produces schema-compliant structured outputs from unstructured assessments, generating typed columns (risk_score INT64, premium_factor FLOAT64) that integrate directly with downstream systems
 - AI.GENERATE_BOOL: Converts complex evaluations into binary decisions, distinguishing genuine anomalies from noise by comparing current activity against historical baselines for automated alert routing
 
-## What This Article Demonstrates
+## What this article demonstrates
 
 Through the CLARIS implementation, we'll show:
 
